@@ -15,6 +15,15 @@ server.listen(port, function(){
     console.log("Listening on port: "+ port)
 })
 
+server.get("/", function(req, res){
+    res.send("OK")
+})
+
+server.post("/test", function(req, res){
+    console.log(req.body)
+    res.send("OK")
+})
+
 server.post("/generate", function(req, res){
     console.log(req.body)
     const echarts = require('echarts');
@@ -26,22 +35,6 @@ server.post("/generate", function(req, res){
       width: 400, // need to specify height and width
       height: 300
     });
-
-    option = {
-      xAxis: {
-        type: 'category',
-        data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
-      },
-      yAxis: {
-        type: 'value'
-      },
-      series: [
-        {
-          data: [120, 200, 150, 80, 70, 110, 130],
-          type: 'bar'
-        }
-      ]
-    };
 
     // use setOption as normal
     chart.setOption(req.body.option);
