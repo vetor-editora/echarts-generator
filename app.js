@@ -24,7 +24,7 @@ server.post("/test", function(req, res){
     res.send("OK")
 })
 
-server.post("/generate", function(req, res){
+server.post("/generate-svg", function(req, res){
     console.log(req.body)
     const echarts = require('echarts');
 
@@ -43,4 +43,25 @@ server.post("/generate", function(req, res){
     const svgStr = chart.renderToSVGString();
 
     res.send(svgStr)
+})
+
+server.post("/generate", function(req, res){
+  console.log(req.body)
+  const echarts = require('echarts');
+  const { createCanvas } = require('canvas');
+
+
+  const canvas = createCanvas(800, 600);
+// ECharts can use the Canvas instance created by node-canvas as a container directly
+  const chart = echarts.init(canvas);
+
+  // use setOption as normal
+  chart.setOption(req.body.option);
+
+  // Output a string
+  res.writeHead(200, {
+    'Content-Type': 'image/png'
+  });
+  res.write(canvas.toBuffer('image/png'));
+  res.end();
 })
