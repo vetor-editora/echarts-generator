@@ -44,7 +44,7 @@ server.post("/generate", function(req, res){
     };
 
     // use setOption as normal
-    chart.setOption(option);
+    chart.setOption(req.body.option);
 
     // Output a string
     const svgStr = chart.renderToSVGString();
