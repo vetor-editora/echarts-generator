@@ -18,6 +18,10 @@ app.listen(port, () => {
   console.log("Listening on port: " + port);
 });
 
+app.get("/ping", (res) => {
+  res.status(200);
+});
+
 app.post("/generate-svg", (req, res) => {
   try {
     const echarts = require('echarts');
@@ -45,7 +49,7 @@ app.post("/generate", (req, res) => {
     const echarts = require('echarts');
     const { createCanvas } = require('canvas');
 
-    const canvas = createCanvas(800, 600);
+    const canvas = createCanvas(1280, 720);
     const chart = echarts.init(canvas);
 
     chart.setOption(req.body.option);

@@ -2,7 +2,7 @@
   "name": "echarts-generator",
   "version": "1.0.0",
   "main": "app.js",
-  "author": "Murilo Mothsin",
+  "author": "Pedro Mothsin",
   "license": "MIT",
   "scripts": {
     "start": "node app.js"
