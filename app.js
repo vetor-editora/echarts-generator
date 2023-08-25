@@ -19,7 +19,7 @@ app.listen(port, () => {
 });
 
 app.get("/ping", (req, res) => {
-  res.status(200).send("pong");
+  res.status(200).send("pong!");
 });
 
 app.post("/generate-svg", (req, res) => {
