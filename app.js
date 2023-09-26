@@ -33,16 +33,7 @@ app.post("/generate-svg", (req, res) => {
       height: 300
     });
 
-    chart_options = req.body.option;
-    
-    // Decode JS
-    const CHART_JS_PATTERN = /"ECHART_JS:(.*?):ECHART_JS_END"/m;
-    chart_options = chart_options.replace(CHART_JS_PATTERN, (match, captured) => {
-      const decodedData = Buffer.from(captured, 'base64').toString('utf-8');
-      return decodedData;
-    });
-
-    chart.setOption(chart_options);
+    chart.setOption(req.body.option);
 
     const svgStr = chart.renderToSVGString();
 
@@ -61,16 +52,7 @@ app.post("/generate", (req, res) => {
     const canvas = createCanvas(1280, 720);
     const chart = echarts.init(canvas);
 
-    chart_options = req.body.option;
-
-    // Decode JS
-    const CHART_JS_PATTERN = /"ECHART_JS:(.*?):ECHART_JS_END"/m;
-    chart_options = chart_options.replace(CHART_JS_PATTERN, (match, captured) => {
-      const decodedData = Buffer.from(captured, 'base64').toString('utf-8');
-      return decodedData;
-    });
-
-    chart.setOption(chart_options);
+    chart.setOption(req.body.option);
 
     res.writeHead(200, {
       'Content-Type': 'image/png'
