@@ -4,6 +4,7 @@ const bodyParser = require('body-parser');
 const express = require('express');
 const logger = require('morgan');
 const cors = require('cors');
+const ecStat = require('echarts-stat');
 
 const app = express();
 
