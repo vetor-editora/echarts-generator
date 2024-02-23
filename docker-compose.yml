@@ -1,0 +1,12 @@
+version: '3'
+services:
+  app:
+    build: .
+    volumes:
+      - .:/usr/src/app
+    container_name: vetor-echarts-generator
+    restart: always
+    ports:
+      - 5050:5050
+    command: bash /usr/src/app/start.sh
+    env_file: .env
