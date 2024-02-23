@@ -113,6 +113,7 @@ app.post("/generate-svg", (req, res) => {
 app.post("/generate", (req, res) => {
   try {
     const echarts = require('echarts');
+    const ecStat = require('echarts-stat');
     const { createCanvas } = require('canvas');
 
     const canvas = createCanvas(1280, 720);
