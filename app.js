@@ -113,12 +113,15 @@ app.post("/generate-svg", (req, res) => {
 app.post("/generate", (req, res) => {
   try {
     const echarts = require('echarts');
+    const ecStat = require('echarts-stat');
     const { createCanvas } = require('canvas');
 
     const canvas = createCanvas(1280, 720);
     const chart = echarts.init(canvas);
 
-    chart_data = req.body.option
+    chart_data = req.body.option;
+
+    echarts.registerTransform(ecStat.transform.clustering);
 
     var matches = []
     extractMatches(chart_data, '', matches)
