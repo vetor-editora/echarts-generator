@@ -24,15 +24,15 @@ function extractMatches(obj, parentKey, matches) {
   for (const key in obj) {
     if (typeof obj[key] === 'object' && obj[key] !== null) {
       extractMatches(obj[key], parentKey ? `${parentKey}.${key}` : key, matches);
+    } else if (typeof obj[key] === 'string' && obj[key].startsWith('function')) {
+      try {
+        // if the string contains a function inside the string, we need to convert it to a JS function
+        obj[key] = eval(`(${obj[key]})`);
+      } catch (error) {
+        console.error('Error converting string to function:', error);
+      }
     } else if (typeof obj[key] === 'string') {
       const match = CHART_JS_PATTERN.exec(`"${obj[key]}"`);
-      if (typeof obj[key] === 'string' && obj[key].startsWith('function')) {
-        try {
-          obj[key] = eval(`(${obj[key]})`);
-        } catch (error) {
-          console.error('Error converting string to function:', error);
-        }
-      }
       if (match) {
         const [, captured] = match;
         const decodedData = Buffer.from(captured, 'base64').toString('utf-8');
@@ -55,15 +55,6 @@ function setDataByKeyString(data, keyString, value) {
     }
 
     currentData = currentData[key];
-  }
-
-  // If the value is a string and starts with 'function', convert it into an actual function
-  if (typeof value === 'string' && value.startsWith('function')) {
-    try {
-      value = eval(`(${value})`);
-    } catch (error) {
-      console.error('Error converting string to function:', error);
-    }
   }
 
   currentData[keys[keys.length - 1]] = value;
