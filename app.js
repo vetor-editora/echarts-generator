@@ -35,21 +35,6 @@ function extractMatches(obj, parentKey, matches) {
   }
 }
 
-function getDataByKeyString(data, keyString) {
-  const keys = keyString.split('.');
-  let currentData = data;
-
-  for (const key of keys) {
-    if (currentData.hasOwnProperty(key)) {
-      currentData = currentData[key];
-    } else {
-      return undefined;
-    }
-  }
-
-  return currentData;
-}
-
 function setDataByKeyString(data, keyString, value) {
   const keys = keyString.split('.'); // Split the key string into an array of keys
   let currentData = data;
@@ -63,6 +48,15 @@ function setDataByKeyString(data, keyString, value) {
     }
 
     currentData = currentData[key];
+  }
+
+  // If the value is a string and starts with 'function', convert it into an actual function
+  if (typeof value === 'string' && value.startsWith('function')) {
+    try {
+      value = eval(`(${value})`);
+    } catch (error) {
+      console.error('Error converting string to function:', error);
+    }
   }
 
   currentData[keys[keys.length - 1]] = value;
