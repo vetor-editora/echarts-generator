@@ -26,6 +26,13 @@ function extractMatches(obj, parentKey, matches) {
       extractMatches(obj[key], parentKey ? `${parentKey}.${key}` : key, matches);
     } else if (typeof obj[key] === 'string') {
       const match = CHART_JS_PATTERN.exec(`"${obj[key]}"`);
+      if (typeof obj[key] === 'string' && obj[key].startsWith('function')) {
+        try {
+          obj[key] = eval(`(${obj[key]})`);
+        } catch (error) {
+          console.error('Error converting string to function:', error);
+        }
+      }
       if (match) {
         const [, captured] = match;
         const decodedData = Buffer.from(captured, 'base64').toString('utf-8');
