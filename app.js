@@ -20,10 +20,16 @@ app.listen(port, () => {
 
 const CHART_JS_PATTERN = /"ECHART_JS:(.*?):ECHART_JS_END"/m;
 
+function mfftLabelFormatter(obj, key) {
+  obj[key] = function (value, index) { return value.toFixed(1); };
+}
+
 function extractMatches(obj, parentKey, matches) {
   for (const key in obj) {
     if (typeof obj[key] === 'object' && obj[key] !== null) {
       extractMatches(obj[key], parentKey ? `${parentKey}.${key}` : key, matches);
+    } else if (typeof obj[key] === 'string' && obj[key].startsWith('MFFT_TEST')) {
+      mfftLabelFormatter(obj, key);
     } else if (typeof obj[key] === 'string') {
       const match = CHART_JS_PATTERN.exec(`"${obj[key]}"`);
       if (match) {
@@ -33,21 +39,6 @@ function extractMatches(obj, parentKey, matches) {
       }
     }
   }
-}
-
-function getDataByKeyString(data, keyString) {
-  const keys = keyString.split('.');
-  let currentData = data;
-
-  for (const key of keys) {
-    if (currentData.hasOwnProperty(key)) {
-      currentData = currentData[key];
-    } else {
-      return undefined;
-    }
-  }
-
-  return currentData;
 }
 
 function setDataByKeyString(data, keyString, value) {
